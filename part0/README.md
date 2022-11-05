@@ -31,3 +31,13 @@ sequenceDiagram
     server->>browser: data.json
     Note left of browser: browser executes the event handler that renders notes to the page
 ```
+
+# 0.6: New note spa
+
+```mermaid
+sequenceDiagram
+    browser->>server: HTTP POST  https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note left of browser: The POST request contains the new note as JSON. Content-Type header is set to 'application/json' so the server knows the data is in JSON format. An event handler listens to the form submit event, prevents the default behaviour (e.preventDefault()) of form submit, creates a new note and adds it to the notes list, renders it on the page and sends the new note to the server.
+    server->>browser: 201 created
+    Note: right of server: The server does not ask for a redirect, and the browser stays on the same page.
+```
