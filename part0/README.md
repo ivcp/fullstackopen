@@ -1,6 +1,6 @@
 # 0.4: New note
 
-```
+```mermaid
 sequenceDiagram
     browser->>server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
     server->>browser: URL redirect
