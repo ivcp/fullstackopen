@@ -1,5 +1,6 @@
 # 0.4: New note
 
+sequenceDiagram
 browser->>server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
 server->>browser: URL redirect
 browser->>server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
