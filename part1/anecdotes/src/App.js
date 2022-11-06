@@ -38,8 +38,14 @@ const App = () => {
       <button onClick={vote}>vote</button>
       <button onClick={random}>next anecdote</button>
       <h1>Anecdote with most votes</h1>
-      <div>{anecdotes[mostVotes]}</div>
-      <p>Has {Math.max(...points)} votes</p>
+      {mostVotes === 0 ? (
+        <p>No votes yet.</p>
+      ) : (
+        <>
+          <div>{anecdotes[mostVotes]}</div>
+          <p>Has {Math.max(...points)} votes</p>
+        </>
+      )}
     </>
   );
 };
