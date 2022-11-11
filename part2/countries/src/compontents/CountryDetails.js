@@ -9,7 +9,7 @@ const CountryDetails = ({ name, capital, area, languages, image }) => {
   useEffect(() => {
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=75baeb5e4a9787a9404755a3d9f7f7be
+        `https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=${process.env.REACT_APP_API_KEY}
         `
       )
       .then((response) => {
