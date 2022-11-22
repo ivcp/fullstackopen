@@ -28,15 +28,7 @@ const App = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (newName === '') return;
-    if (isNaN(newNumber) || newNumber === '') {
-      setError(true);
-      setMessage(`Please enter valid number`);
-      setTimeout(() => {
-        setMessage(null);
-      }, 3000);
-      return;
-    }
+
     const personObject = {
       name: newName,
       number: newNumber,
@@ -60,11 +52,9 @@ const App = () => {
               setMessage(null);
             }, 5000);
           })
-          .catch(() => {
+          .catch(error => {
             setError(true);
-            setMessage(
-              `Information of ${person.name} has already been removed from server`
-            );
+            setMessage(error.response.data.error);
             setTimeout(() => {
               setMessage(null);
             }, 5000);
@@ -87,7 +77,7 @@ const App = () => {
         }, 5000);
       })
       .catch(err => {
-        setMessage(err.message);
+        setMessage(err.response.data.error);
         setError(true);
       });
   };
@@ -116,7 +106,7 @@ const App = () => {
           }, 5000);
         })
         .catch(err => {
-          setMessage(err.message);
+          setMessage(err.response.data.error);
           setError(true);
         });
     }
