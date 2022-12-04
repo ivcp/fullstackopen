@@ -11,3 +11,7 @@
 .error {
   color: red;
 }
+
+.remove {
+  background-color: salmon;
+}

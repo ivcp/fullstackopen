@@ -1,51 +1,63 @@
-import React from 'react';
+import { useState } from 'react';
 
-const BlogForm = ({ setNewBlog, newBlog, handleSubmitNewBlog }) => {
+const BlogForm = ({ createBlog }) => {
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: '',
+  });
+
+  const handleChange = ({ target }) => {
+    setNewBlog({
+      ...newBlog,
+      [target.name]: target.value,
+    });
+  };
+
+  const addBlog = e => {
+    e.preventDefault();
+    createBlog({
+      title: newBlog.title,
+      author: newBlog.author,
+      url: newBlog.url,
+    });
+    setNewBlog({
+      title: '',
+      author: '',
+      url: '',
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmitNewBlog}>
+    <form onSubmit={addBlog}>
       <div>
         title
         <input
           type="text"
           value={newBlog.title}
           name="title"
-          onChange={({ target }) =>
-            setNewBlog({
-              ...newBlog,
-              title: target.value,
-            })
-          }
+          onChange={handleChange}
         />
       </div>
       <div>
         author
         <input
-          type="password"
+          type="text"
           value={newBlog.author}
           name="author"
-          onChange={({ target }) =>
-            setNewBlog({
-              ...newBlog,
-              author: target.value,
-            })
-          }
+          onChange={handleChange}
         />
       </div>
       <div>
         url
         <input
-          type="password"
+          type="text"
           value={newBlog.url}
-          name="author"
-          onChange={({ target }) =>
-            setNewBlog({
-              ...newBlog,
-              url: target.value,
-            })
-          }
+          name="url"
+          onChange={handleChange}
         />
       </div>
-      <button type="submit">create</button>
+      <button type="submit">add blog</button>
     </form>
   );
 };

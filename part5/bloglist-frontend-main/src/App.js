@@ -1,30 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import BlogForm from './components/BlogForm';
 import LogInForm from './components/LogInForm';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
+import notify from './helpers/notification';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState({
-    title: '',
-    author: '',
-    url: '',
-  });
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [error, setError] = useState(false);
+  const [userAction, setUserAction] = useState(0);
 
   useEffect(() => {
     (async () => {
       const blogs = await blogService.getAll();
       setBlogs(blogs);
     })();
-  }, []);
+  }, [userAction]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -44,17 +42,19 @@ const App = () => {
       setUser(user);
       setUsername('');
       setPassword('');
-      setNotificationMessage(`${user.name} logged in successfully`);
-      setError(false);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 5000);
+      notify(
+        setNotificationMessage,
+        `${user.name} logged in successfully`,
+        setError,
+        false
+      );
     } catch (exception) {
-      setNotificationMessage('Wrong username or password');
-      setError(true);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 5000);
+      notify(
+        setNotificationMessage,
+        'Wrong username or password',
+        setError,
+        true
+      );
     }
   };
 
@@ -63,36 +63,24 @@ const App = () => {
     setUser(null);
   };
 
-  const addBlog = async e => {
-    e.preventDefault();
-
-    const blogObject = {
-      title: newBlog.title,
-      author: newBlog.author,
-      url: newBlog.url,
-    };
+  const addBlog = async newBlogObject => {
+    blogFormRef.current.toggleVisibility();
     try {
-      const returnedBlog = await blogService.create(blogObject);
+      const returnedBlog = await blogService.create(newBlogObject);
       setBlogs(blogs.concat(returnedBlog));
-      setNewBlog({
-        title: '',
-        author: '',
-        url: '',
-      });
-      setNotificationMessage(
-        `A new blog ${returnedBlog.title} by ${returnedBlog.author} added ✔`
+      notify(
+        setNotificationMessage,
+        `A new blog ${returnedBlog.title} by ${returnedBlog.author} added ✔`,
+        setError,
+        false
       );
-      setError(false);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 5000);
     } catch (exception) {
-      console.log(exception);
-      setNotificationMessage(exception.response.data.error);
-      setError(true);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 5000);
+      notify(
+        setNotificationMessage,
+        exception.response.data.error,
+        setError,
+        true
+      );
     }
   };
 
@@ -104,6 +92,10 @@ const App = () => {
       </div>
     );
   };
+
+  const blogFormRef = useRef();
+
+  const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
 
   return (
     <div>
@@ -122,14 +114,19 @@ const App = () => {
         loggedIn()
       )}
       {user && (
-        <BlogForm
-          newBlog={newBlog}
-          setNewBlog={setNewBlog}
-          handleSubmitNewBlog={addBlog}
-        />
+        <Togglable buttonLabel="add new blog" ref={blogFormRef}>
+          <BlogForm createBlog={addBlog} />
+        </Togglable>
       )}
-      {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
+      {sortedBlogs.map(blog => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={user}
+          setUserAction={setUserAction}
+          setNotificationMessage={setNotificationMessage}
+          setError={setError}
+        />
       ))}
     </div>
   );

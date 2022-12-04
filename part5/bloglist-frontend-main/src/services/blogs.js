@@ -21,4 +21,21 @@ const create = async newObject => {
   return response.data;
 };
 
-export default { getAll, create, setToken };
+const updateLikes = async (likesObject, id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const url = `${baseUrl}/${id}`;
+  const updatedBlog = await axios.put(url, likesObject, config);
+  return updatedBlog.data;
+};
+
+const deleteBlog = async id => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const url = `${baseUrl}/${id}`;
+  await axios.delete(url, config);
+};
+
+export default { getAll, create, setToken, updateLikes, deleteBlog };
