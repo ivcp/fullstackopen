@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import blogsService from '../services/blogs';
 import notify from '../helpers/notification';
+import PropTypes from 'prop-types';
 
 const Blog = ({
   blog,
@@ -95,6 +96,14 @@ const Blog = ({
       )}
     </div>
   );
+};
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  setUserAction: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  setNotificationMessage: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
 };
 
 export default Blog;

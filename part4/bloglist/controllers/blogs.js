@@ -56,24 +56,17 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
   const id = request.params.id;
   const { likes } = request.body;
 
-  const user = request.user;
-  const blogToUpdate = await Blog.findById(id);
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    id,
+    { likes },
+    {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    }
+  );
 
-  if (blogToUpdate.user._id.toString() === user._id.toString()) {
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      id,
-      { likes },
-      {
-        new: true,
-        runValidators: true,
-        context: 'query',
-      }
-    );
-
-    response.json(updatedBlog);
-  } else {
-    return response.status(401).json({ error: 'Unauthorized' });
-  }
+  response.json(updatedBlog);
 });
 
 module.exports = blogsRouter;
