@@ -1,15 +1,7 @@
 import { useState } from 'react';
-import blogsService from '../services/blogs';
-import notify from '../helpers/notification';
 import PropTypes from 'prop-types';
 
-const Blog = ({
-  blog,
-  setUserAction,
-  user,
-  setNotificationMessage,
-  setError,
-}) => {
+const Blog = ({ blog, removeBlog, user, updateLikes }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const blogStyle = {
@@ -22,52 +14,12 @@ const Blog = ({
 
   const button = showDetails ? 'hide' : 'view';
 
-  const handleUpdateLikes = async () => {
-    if (!user) {
-      notify(
-        setNotificationMessage,
-        'You must be logged in to like a blog!',
-        setError,
-        false
-      );
-      return;
-    }
-    try {
-      await blogsService.updateLikes(
-        {
-          likes: blog.likes + 1,
-        },
-        blog.id
-      );
-      setUserAction(prev => prev + 1);
-    } catch (exception) {
-      let msg;
-      if (exception.response.status === 500) {
-        msg = 'Not connected to server';
-      } else {
-        msg = exception.response.data.error;
-      }
-      notify(setNotificationMessage, msg, setError, true);
-    }
+  const handleUpdateLikes = () => {
+    updateLikes(blog);
   };
 
-  const handleRemove = async () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      try {
-        await blogsService.deleteBlog(blog.id);
-        setUserAction(prev => prev + 1);
-      } catch (exception) {
-        if (exception.response.status === 500) {
-          setNotificationMessage('Not connected to server');
-        } else {
-          setNotificationMessage(exception.response.data.error);
-        }
-        setError(true);
-        setTimeout(() => {
-          setNotificationMessage(null);
-        }, 5000);
-      }
-    }
+  const handleRemove = () => {
+    removeBlog(blog);
   };
 
   let showRemoveBtn = false;
@@ -81,8 +33,8 @@ const Blog = ({
       <button onClick={() => setShowDetails(!showDetails)}>{button}</button>
       {showDetails && (
         <>
-          <div>{blog.url}</div>
-          <div>
+          <div className="blog-url">{blog.url}</div>
+          <div className="blog-likes">
             likes {blog.likes}
             <button onClick={handleUpdateLikes}>like</button>
           </div>
@@ -100,10 +52,9 @@ const Blog = ({
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  setUserAction: PropTypes.func.isRequired,
   user: PropTypes.object,
-  setNotificationMessage: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
+  updateLikes: PropTypes.func.isRequired,
 };
 
 export default Blog;

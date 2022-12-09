@@ -17,14 +17,13 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [error, setError] = useState(false);
-  const [userAction, setUserAction] = useState(0);
 
   useEffect(() => {
     (async () => {
       const blogs = await blogService.getAll();
       setBlogs(blogs);
     })();
-  }, [userAction]);
+  }, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -95,6 +94,72 @@ const App = () => {
     );
   };
 
+  const updateLikes = async blog => {
+    if (!user) {
+      notify(
+        setNotificationMessage,
+        'You must be logged in to like a blog!',
+        setError,
+        true
+      );
+      return;
+    }
+    try {
+      const updatedBlog = await blogService.updateLikes(
+        {
+          likes: blog.likes + 1,
+        },
+        blog.id
+      );
+      const updatedBlogArray = blogs.map(b =>
+        b.id === updatedBlog.id ? updatedBlog : b
+      );
+      setBlogs(updatedBlogArray);
+      notify(
+        setNotificationMessage,
+        `👍 ${updatedBlog.title}`,
+        setError,
+        false
+      );
+    } catch (exception) {
+      let msg;
+      if (exception.response.status === 500) {
+        msg = 'Not connected to server';
+      } else {
+        msg = exception.response.data.error;
+      }
+      notify(setNotificationMessage, msg, setError, true);
+    }
+  };
+
+  const removeBlog = async blogToDelete => {
+    if (
+      window.confirm(
+        `Remove blog ${blogToDelete.title} by ${blogToDelete.author}?`
+      )
+    ) {
+      try {
+        await blogService.deleteBlog(blogToDelete.id);
+        const updatedBlogArray = blogs.filter(b => b.id !== blogToDelete.id);
+        setBlogs(updatedBlogArray);
+        notify(
+          setNotificationMessage,
+          `❌ Deleted ${blogToDelete.title} by ${blogToDelete.author}`,
+          setError,
+          false
+        );
+      } catch (exception) {
+        let msg;
+        if (exception.response.status === 500) {
+          msg = 'Not connected to server';
+        } else {
+          msg = exception.response.data.error;
+        }
+        notify(setNotificationMessage, msg, setError, true);
+      }
+    }
+  };
+
   const blogFormRef = useRef();
 
   const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
@@ -125,9 +190,8 @@ const App = () => {
           key={blog.id}
           blog={blog}
           user={user}
-          setUserAction={setUserAction}
-          setNotificationMessage={setNotificationMessage}
-          setError={setError}
+          updateLikes={updateLikes}
+          removeBlog={removeBlog}
         />
       ))}
     </div>
