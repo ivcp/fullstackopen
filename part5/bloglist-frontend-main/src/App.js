@@ -8,8 +8,6 @@ import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import notify from './helpers/notification';
 
-//TODO: one user one like?
-
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
