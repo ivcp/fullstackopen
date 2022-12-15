@@ -1,4 +1,5 @@
 import reducer from './anecdoteReducer';
+import deepFreeze from 'deep-freeze';
 
 describe('anecdote reducer', () => {
   const initialState = [
@@ -22,8 +23,9 @@ describe('anecdote reducer', () => {
       },
     };
 
+    deepFreeze(initialState);
     const newState = reducer(initialState, action);
-    expect(newState[0].votes).toEqual(1);
+    expect(newState[0].votes).toBe(1);
   });
 
   test('add new anecdote', () => {
@@ -36,6 +38,7 @@ describe('anecdote reducer', () => {
       },
     };
 
+    deepFreeze(initialState);
     const newState = reducer(initialState, action);
     expect(newState).toHaveLength(3);
     expect(newState).toContainEqual({
