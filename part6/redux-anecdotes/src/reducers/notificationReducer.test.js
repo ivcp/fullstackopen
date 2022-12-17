@@ -4,7 +4,7 @@ describe('notification reducer', () => {
   test('returns new notification with setNotification', () => {
     const initialMessage = '';
     const action = {
-      type: 'notification/setNotification',
+      type: 'notification/set',
       payload: 'Brand new notification!',
     };
 
