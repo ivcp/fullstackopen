@@ -8,26 +8,13 @@ describe('notification reducer', () => {
       error: false,
     };
     const action = {
-      type: 'notification/setMessage',
-      payload: 'test msg',
+      type: 'notification/addMessage',
+      payload: { message: 'test msg', error: true },
     };
     deepFreeze(initialState);
     const newState = notificationReducer(initialState, action);
     console.log(newState);
-    expect(newState.message).toBe(action.payload);
-  });
-  it('sets error status with notification/setError', () => {
-    const initialState = {
-      message: null,
-      error: false,
-    };
-    const action = {
-      type: 'notification/setError',
-      payload: true,
-    };
-    deepFreeze(initialState);
-    const newState = notificationReducer(initialState, action);
-    console.log(newState);
-    expect(newState.error).toBe(action.payload);
+    expect(newState.message).toBe(action.payload.message);
+    expect(newState).toEqual(action.payload);
   });
 });

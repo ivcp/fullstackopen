@@ -1,6 +1,7 @@
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { useState } from 'react';
+import BlogForm from './BlogForm';
 
-const Togglable = forwardRef(({ buttonLabel, children }, refs) => {
+const Togglable = () => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? 'none' : '' };
@@ -10,22 +11,18 @@ const Togglable = forwardRef(({ buttonLabel, children }, refs) => {
     setVisible(!visible);
   };
 
-  useImperativeHandle(refs, () => {
-    return { toggleVisibility };
-  });
-
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{buttonLabel}</button>
+        <button onClick={toggleVisibility}>add new blog</button>
       </div>
       <div style={showWhenVisible}>
-        {children}
+        <BlogForm toggleVisibility={toggleVisibility} />
         <button onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
   );
-});
+};
 
 Togglable.displayName = 'Togglable';
 

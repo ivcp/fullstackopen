@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../reducers/notificationReducer';
+import { updateLikes, removeBlog } from '../reducers/blogReducer';
 
-const Blog = ({ blog, removeBlog, user, updateLikes }) => {
+const Blog = ({ blog, user }) => {
   const [showDetails, setShowDetails] = useState(false);
+  const dispatch = useDispatch();
 
   const blogStyle = {
     paddingTop: 10,
@@ -15,11 +19,25 @@ const Blog = ({ blog, removeBlog, user, updateLikes }) => {
   const button = showDetails ? 'hide' : 'view';
 
   const handleUpdateLikes = () => {
-    updateLikes(blog);
+    if (!user) {
+      dispatch(setMessage('You must be logged in to like a blog!', true));
+
+      return;
+    }
+    dispatch(
+      updateLikes(
+        {
+          likes: blog.likes + 1,
+        },
+        blog.id
+      )
+    );
   };
 
   const handleRemove = () => {
-    removeBlog(blog);
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      dispatch(removeBlog(blog));
+    }
   };
 
   let showRemoveBtn = false;
@@ -53,8 +71,6 @@ const Blog = ({ blog, removeBlog, user, updateLikes }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object,
-  removeBlog: PropTypes.func.isRequired,
-  updateLikes: PropTypes.func.isRequired,
 };
 
 export default Blog;
