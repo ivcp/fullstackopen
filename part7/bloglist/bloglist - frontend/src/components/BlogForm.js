@@ -66,7 +66,7 @@ const BlogForm = ({ toggleVisibility }) => {
           onChange={handleChange}
         />
       </div>
-      <button type="submit" id="add-blog-btn">
+      <button color="primary" type="submit" id="add-blog-btn">
         add blog
       </button>
     </form>

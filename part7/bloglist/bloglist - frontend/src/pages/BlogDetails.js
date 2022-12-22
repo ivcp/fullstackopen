@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../reducers/notificationReducer';
-import { updateLikes, removeBlog } from '../reducers/blogReducer';
+import { updateLikes, removeBlog, addComment } from '../reducers/blogReducer';
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -11,6 +11,7 @@ const BlogDetails = () => {
   const blogs = useSelector(state => state.blogs);
   const user = useSelector(state => state.user);
   const selectedBlog = blogs.find(blog => blog.id === id);
+  const [comment, setComment] = useState('');
 
   if (!selectedBlog) {
     return null;
@@ -41,6 +42,13 @@ const BlogDetails = () => {
     }
   };
 
+  const handleSubmitComment = e => {
+    e.preventDefault();
+    if (comment.trim() === '') return;
+    dispatch(addComment({ comment }, id));
+    setComment('');
+  };
+
   let showRemoveBtn = false;
   if (user) {
     showRemoveBtn = selectedBlog.user.username === user.username;
@@ -60,6 +68,26 @@ const BlogDetails = () => {
           remove
         </button>
       )}
+      <div>
+        <h3>comments</h3>
+        <form onSubmit={handleSubmitComment}>
+          <input
+            type="text"
+            value={comment}
+            onChange={({ target }) => setComment(target.value)}
+          />
+          <button type="submit">add comment</button>
+        </form>
+        <ul>
+          {selectedBlog.comments.length > 0 ? (
+            selectedBlog.comments.map((comment, i) => {
+              return <li key={i}>{comment}</li>;
+            })
+          ) : (
+            <p>no comments yet. add one!</p>
+          )}
+        </ul>
+      </div>
     </div>
   );
 };

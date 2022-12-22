@@ -58,7 +58,7 @@ describe('blog reducer', () => {
     console.log(newState);
     expect(newState[0].likes).toBe(5);
   });
-  it('deletes blog with with blog/delete', () => {
+  it('deletes blog with blog/delete', () => {
     const initialState = [
       { title: 'first', author: 'tester', url: 'www', likes: 4, id: 69 },
     ];
@@ -70,5 +70,29 @@ describe('blog reducer', () => {
     const newState = blogReducer(initialState, action);
     console.log(newState);
     expect(newState).toHaveLength(0);
+  });
+  it('adds comment with blog/commentOnBlog', () => {
+    const initialState = [
+      {
+        title: 'first',
+        author: 'tester',
+        url: 'www',
+        likes: 4,
+        id: 69,
+        comments: [],
+      },
+    ];
+    const action = {
+      type: 'blog/comment',
+      payload: {
+        id: 69,
+        comment: 'test comment',
+      },
+    };
+    deepFreeze(initialState);
+    const newState = blogReducer(initialState, action);
+    console.log(newState);
+    expect(newState[0]).toHaveProperty('comments');
+    expect(newState[0].comments).toContain('test comment');
   });
 });

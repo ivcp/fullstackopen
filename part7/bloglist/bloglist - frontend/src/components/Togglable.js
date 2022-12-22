@@ -18,7 +18,9 @@ const Togglable = () => {
       </div>
       <div style={showWhenVisible}>
         <BlogForm toggleVisibility={toggleVisibility} />
-        <button onClick={toggleVisibility}>cancel</button>
+        <button color="warning" onClick={toggleVisibility}>
+          cancel
+        </button>
       </div>
     </div>
   );
