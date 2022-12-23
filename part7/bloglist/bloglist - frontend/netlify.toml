@@ -1,3 +1,0 @@
-[[redirects]]
-  from = "/api/*"
-  to = "https://proud-dream-5593.fly.dev/:splat"
