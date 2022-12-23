@@ -41,7 +41,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://proud-dream-5593.fly.dev",
+  "proxy": "http://localhost:8080",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

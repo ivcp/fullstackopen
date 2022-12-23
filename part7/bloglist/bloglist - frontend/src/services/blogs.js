@@ -1,5 +1,8 @@
 import axios from 'axios';
-const baseUrl = '/api/blogs';
+const baseUrl =
+  process.env.NODE_ENV === 'development'
+    ? '/api/blogs'
+    : 'https://proud-dream-5593.fly.dev/api/blogs';
 
 let token = null;
 
