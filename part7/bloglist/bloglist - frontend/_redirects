@@ -1,3 +1,0 @@
-/users/\* https://proud-dream-5593.fly.dev/api/users/:splat 200!
-/blogs/\* https://proud-dream-5593.fly.dev/api/blogs/:splat 200!
-/\* /index.html 200
