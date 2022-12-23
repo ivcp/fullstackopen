@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import BlogForm from './BlogForm';
+import styled from 'styled-components';
+import Button from '../UI/Button';
 
 const Togglable = () => {
   const [visible, setVisible] = useState(false);
@@ -12,20 +14,24 @@ const Togglable = () => {
   };
 
   return (
-    <div>
+    <Container>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>add new blog</button>
+        <Button onClick={toggleVisibility}>add new blog</Button>
       </div>
       <div style={showWhenVisible}>
         <BlogForm toggleVisibility={toggleVisibility} />
-        <button color="warning" onClick={toggleVisibility}>
-          cancel
-        </button>
+        <Button onClick={toggleVisibility}>cancel</Button>
       </div>
-    </div>
+    </Container>
   );
 };
 
 Togglable.displayName = 'Togglable';
 
 export default Togglable;
+
+// STYLES
+
+const Container = styled.div`
+  margin-block: 2rem;
+`;

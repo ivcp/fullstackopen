@@ -1,21 +1,14 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Blog = ({ blog }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
   return (
-    <div style={blogStyle} className="blog">
+    <List>
       <Link to={`blogs/${blog.id}`}>
         {blog.title} {blog.author}
       </Link>
-    </div>
+    </List>
   );
 };
 
@@ -24,3 +17,20 @@ Blog.propTypes = {
 };
 
 export default Blog;
+
+// Styles
+
+const List = styled.li`
+  list-style: none;
+  margin-bottom: 1rem;
+
+  & a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: ${({ theme }) => theme.text};
+  }
+
+  & a:hover {
+    color: ${({ theme }) => theme.primary};
+  }
+`;

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { initializeUsers } from '../reducers/usersReducer';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const User = () => {
   const { id } = useParams();
@@ -21,18 +22,30 @@ const User = () => {
   }
 
   return (
-    <div>
+    <Container>
       <h2>{selectedUser.name}</h2>
       <p>
-        <strong>added blogs</strong>
+        <strong>added blogs:</strong>
       </p>
       <ul>
         {selectedUser.blogs.map(blog => (
           <li key={blog.id}>{blog.title}</li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 };
 
 export default User;
+
+//Styles
+
+const Container = styled.div`
+  margin-top: 2rem;
+  color: ${({ theme }) => theme.text};
+
+  & ul {
+    list-style: none;
+    margin-top: 1rem;
+  }
+`;

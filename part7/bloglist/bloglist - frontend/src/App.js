@@ -12,6 +12,9 @@ import Users from './pages/Users';
 import User from './pages/User';
 import BlogDetails from './pages/BlogDetails';
 import Navbar from './components/Navbar';
+import styled, { ThemeProvider } from 'styled-components';
+import GlobalStyle from './theme/Glogal';
+import theme from './theme/Colors';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,32 +39,43 @@ const App = () => {
   const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
 
   return (
-    <div>
-      <Navbar />
-      <h2>blogs</h2>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <Container>
+        <Navbar />
+        <Notification message={notificationMessage} error={error} />
 
-      <Notification message={notificationMessage} error={error} />
+        {!user && <LogInForm />}
 
-      {!user && <LogInForm />}
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              {user && <Togglable />}
-              {sortedBlogs.map(blog => (
-                <Blog key={blog.id} blog={blog} user={user} />
-              ))}
-            </>
-          }
-        />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<User />} />
-        <Route path="/blogs/:id" element={<BlogDetails />} />
-      </Routes>
-    </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                {user && <Togglable />}
+                <ul>
+                  {sortedBlogs.map(blog => (
+                    <Blog key={blog.id} blog={blog} user={user} />
+                  ))}
+                </ul>
+              </>
+            }
+          />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<User />} />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
+        </Routes>
+      </Container>
+    </ThemeProvider>
   );
 };
 
 export default App;
+
+// Styles
+
+const Container = styled.div`
+  margin-inline: auto;
+  max-width: 40rem;
+  margin-top: 2rem;
+`;

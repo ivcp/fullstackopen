@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../reducers/userReducer';
+import styled from 'styled-components';
+import Button from '../UI/Button';
 
 const LogInForm = () => {
   const dispatch = useDispatch();
@@ -13,35 +15,45 @@ const LogInForm = () => {
   };
 
   return (
-    <div>
-      <h2>Log in to application</h2>
+    <Container>
       <form onSubmit={handleLogin}>
         <div>
-          username
-          <input
+          <Input
             id="username"
             type="text"
             value={username}
             name="Username"
+            placeholder="username"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
-          password
-          <input
+          <Input
             id="password"
             type="password"
             value={password}
             name="Password"
+            placeholder="password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit" id="login-btn">
-          login
-        </button>
+        <Button type="submit" id="login-btn">
+          log in
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 };
 
 export default LogInForm;
+
+//Styles
+
+const Container = styled.div`
+  margin-block: 2rem;
+  text-align: right;
+`;
+
+const Input = styled.input`
+  font: inherit;
+`;

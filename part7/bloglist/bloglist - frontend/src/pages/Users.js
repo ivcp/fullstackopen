@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { initializeUsers } from '../reducers/usersReducer';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -12,9 +13,9 @@ const Users = () => {
   }, []);
 
   return (
-    <div>
+    <Container>
       <h2>Users</h2>
-      <table>
+      <Table>
         <tbody>
           <tr>
             <th></th>
@@ -32,9 +33,28 @@ const Users = () => {
               );
             })}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Container>
   );
 };
 
 export default Users;
+
+//Styles
+
+const Container = styled.div`
+  margin-top: 2rem;
+  color: ${({ theme }) => theme.text};
+`;
+
+const Table = styled.table`
+  & td {
+    border: 1px solid ${({ theme }) => theme.text};
+    padding: 1rem;
+    text-align: right;
+    & a {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+`;

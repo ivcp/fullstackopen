@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../reducers/notificationReducer';
 import { updateLikes, removeBlog, addComment } from '../reducers/blogReducer';
+import styled from 'styled-components';
+import Button from '../UI/Button';
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -55,29 +57,31 @@ const BlogDetails = () => {
   }
 
   return (
-    <div>
-      <h2>{selectedBlog.title}</h2>
-      <a href={selectedBlog.url}>{selectedBlog.url}</a>
-      <div>
-        {selectedBlog.likes} likes
-        <button onClick={handleUpdateLikes}>like</button>
-      </div>
-      <p>added by {selectedBlog.user.name}</p>
-      {showRemoveBtn && (
-        <button className="remove" onClick={handleRemove}>
-          remove
-        </button>
-      )}
-      <div>
+    <Container>
+      <BlogContainer>
+        <h2>{selectedBlog.title}</h2>
+        <a href={selectedBlog.url}>{selectedBlog.url}</a>
+        <div>
+          {selectedBlog.likes} likes{' '}
+          <Button onClick={handleUpdateLikes}>like</Button>
+        </div>
+        <p>added by {selectedBlog.user.name}</p>
+        {showRemoveBtn && (
+          <Button remove className="remove" onClick={handleRemove}>
+            remove
+          </Button>
+        )}
+      </BlogContainer>
+      <CommentContainer>
         <h3>comments</h3>
-        <form onSubmit={handleSubmitComment}>
-          <input
+        <Form onSubmit={handleSubmitComment}>
+          <Input
             type="text"
             value={comment}
             onChange={({ target }) => setComment(target.value)}
           />
-          <button type="submit">add comment</button>
-        </form>
+          <Button type="submit">add comment</Button>
+        </Form>
         <ul>
           {selectedBlog.comments.length > 0 ? (
             selectedBlog.comments.map((comment, i) => {
@@ -87,9 +91,51 @@ const BlogDetails = () => {
             <p>no comments yet. add one!</p>
           )}
         </ul>
-      </div>
-    </div>
+      </CommentContainer>
+    </Container>
   );
 };
 
 export default BlogDetails;
+
+//styles
+
+const Container = styled.div`
+  margin-top: 2rem;
+  color: ${({ theme }) => theme.text};
+`;
+
+const BlogContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  & a {
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+  }
+
+  & div {
+    text-align: center;
+  }
+
+  & button {
+    margin-top: 1rem;
+    align-self: flex-start;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+`;
+
+const Input = styled.input`
+  font: inherit;
+`;
+
+const CommentContainer = styled.div`
+  margin-top: 2rem;
+  & ul {
+    list-style: none;
+    margin-top: 1rem;
+  }
+`;

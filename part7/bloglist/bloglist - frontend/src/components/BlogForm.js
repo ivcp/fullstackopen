@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBlog } from '../reducers/blogReducer';
+import styled from 'styled-components';
+import Button from '../UI/Button';
 
 const BlogForm = ({ toggleVisibility }) => {
   const dispatch = useDispatch();
@@ -35,42 +37,52 @@ const BlogForm = ({ toggleVisibility }) => {
   };
 
   return (
-    <form onSubmit={addBlog}>
+    <Form onSubmit={addBlog}>
       <div>
-        title
-        <input
+        <Input
           id="title"
           type="text"
           value={newBlog.title}
           name="title"
+          placeholder="title"
           onChange={handleChange}
         />
       </div>
       <div>
-        author
-        <input
+        <Input
           id="author"
           type="text"
           value={newBlog.author}
           name="author"
+          placeholder="author"
           onChange={handleChange}
         />
       </div>
       <div>
-        url
-        <input
+        <Input
           id="url"
           type="text"
           value={newBlog.url}
           name="url"
+          placeholder="url"
           onChange={handleChange}
         />
       </div>
-      <button color="primary" type="submit" id="add-blog-btn">
+      <Button type="submit" id="add-blog-btn">
         add blog
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
 
 export default BlogForm;
+
+//Styles
+
+const Form = styled.form`
+  margin-bottom: 1rem;
+`;
+
+const Input = styled.input`
+  font: inherit;
+`;
