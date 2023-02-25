@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries/queries';
 
-const BirthYearForm = ({ authors }) => {
+const BirthYearForm = ({ authors, setError }) => {
   const [mutate, { loading }] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
-    onError: error => console.log(error.message),
+    onError: error => setError(error.message),
   });
   const [name, setName] = useState('');
   const [born, setBorn] = useState('');

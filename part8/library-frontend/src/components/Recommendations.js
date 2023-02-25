@@ -1,15 +1,11 @@
+import React from 'react';
+import { RECOMMENDATIONS } from '../queries/queries';
 import { useQuery } from '@apollo/client';
-import { useState } from 'react';
-import { ALL_BOOKS } from '../queries/queries';
-import GenrePicker from './GenrePicker';
 
-const Books = props => {
-  const [genreFilter, setGenreFilter] = useState(null);
-  const { loading, error, data } = useQuery(ALL_BOOKS, {
-    variables: { genre: genreFilter ? genreFilter : '' },
-  });
+const Recommendations = ({ show }) => {
+  const { loading, error, data } = useQuery(RECOMMENDATIONS);
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
   if (loading) {
@@ -19,10 +15,14 @@ const Books = props => {
     return <p>{error.message}</p>;
   }
 
+  const books = data.allBooks.filter(book =>
+    book.genres.includes(data.me.favouriteGenre)
+  );
   return (
     <div>
-      <h2>books</h2>
-
+      <p>
+        Book in your favourite genre <strong>{data.me.favouriteGenre}</strong>
+      </p>
       <table>
         <tbody>
           <tr>
@@ -30,7 +30,7 @@ const Books = props => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {data.allBooks.map(a => (
+          {books.map(a => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -39,9 +39,8 @@ const Books = props => {
           ))}
         </tbody>
       </table>
-      <GenrePicker setGenreFilter={setGenreFilter} />
     </div>
   );
 };
 
-export default Books;
+export default Recommendations;
