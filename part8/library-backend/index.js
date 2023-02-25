@@ -91,10 +91,10 @@ const resolvers = {
       if (args.author) {
         const author = await Author.findOne({ name: args.author });
         return args.genre
-          ? Book.find({ author, genres: args.genre })
-          : Book.find({ author });
+          ? Book.find({ author, genres: args.genre }).populate('author')
+          : Book.find({ author }).populate('author');
       } else {
-        return Book.find({ genres: args.genre });
+        return Book.find({ genres: args.genre }).populate('author');
       }
     },
     allAuthors: async () => Author.find({}),
@@ -116,13 +116,13 @@ const resolvers = {
       if (!currentUser) {
         throw new GraphQLError('not authenticated', {
           extensions: {
-            code: 'BAD_USER_INPUT',
+            code: 'UNAUTHORIZED',
           },
         });
       }
 
       const book = new Book({ ...args });
-      const existingAuthor = await Author.exists({ name: args.author });
+      const existingAuthor = await Author.findOne({ name: args.author });
       if (!existingAuthor) {
         const author = new Author({
           name: args.author,
@@ -162,7 +162,7 @@ const resolvers = {
       if (!currentUser) {
         throw new GraphQLError('not authenticated', {
           extensions: {
-            code: 'BAD_USER_INPUT',
+            code: 'UNAUTHORIZED',
           },
         });
       }
