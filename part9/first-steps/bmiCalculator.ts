@@ -14,32 +14,30 @@ const parseArguments = (args: string[]): InputValues => {
   }
 };
 
-function calculateBmi(height: number, weight: number): void {
+export function calculateBmi(height: number, weight: number): string {
   const heightToMeters = height / 100;
   const bmi = weight / (heightToMeters * heightToMeters);
 
   if (bmi < 16) {
-    console.log('Underweight (Severe thinness)');
+    return 'Underweight (Severe thinness)';
   } else if (bmi > 16 && bmi < 17) {
-    console.log('Underweight (Moderate thinness)');
+    return 'Underweight (Moderate thinness)';
   } else if (bmi > 17 && bmi < 18.5) {
-    console.log('Underweight (Mild thinness)');
+    return 'Underweight (Mild thinness)';
   } else if (bmi > 18.5 && bmi < 25) {
-    console.log('Normal (healthy weight)');
+    return 'Normal (healthy weight)';
   } else if (bmi > 25 && bmi < 30) {
-    console.log('Overweight (Pre-obese)');
+    return 'Overweight (Pre-obese)';
   } else if (bmi > 30 && bmi < 35) {
-    console.log('Obese (Class I)');
+    return 'Obese (Class I)';
   } else if (bmi > 35 && bmi < 40) {
-    console.log('Obese (Class II)');
-  } else if (bmi >= 40) {
-    console.log('Obese (Class III)');
-  }
+    return 'Obese (Class II)';
+  } else return 'Obese (Class III)';
 }
 
 try {
   const { height, weight } = parseArguments(process.argv);
-  calculateBmi(height, weight);
+  console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong: ';
   if (error instanceof Error) errorMessage += error.message;
