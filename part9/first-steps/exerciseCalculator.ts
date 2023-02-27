@@ -13,7 +13,7 @@ interface ExerciseValues {
   dailyExerciseHours: number[];
 }
 
-function getRating(targetDailyHours: number, average: number): number {
+function getRating(targetDailyHours: number, average: number): 1 | 2 | 3 {
   if (Math.round(average) === targetDailyHours) {
     return 2;
   } else if (Math.round(average) > targetDailyHours) {
@@ -23,7 +23,7 @@ function getRating(targetDailyHours: number, average: number): number {
   }
 }
 
-function getRatingDescription(rating: number): string {
+function getRatingDescription(rating: 1 | 2 | 3): string {
   switch (rating) {
     case 1:
       return 'that was bad and you should feel bad';
@@ -31,13 +31,15 @@ function getRatingDescription(rating: number): string {
       return 'not too bad but could be better';
     case 3:
       return 'great job!';
-    default:
-      break;
   }
 }
 
 const parseExerciseArguments = (args: string[]): ExerciseValues => {
   const input: number[] = args.slice(2).map(n => +n);
+
+  if (input.length < 2) {
+    throw new Error('Missing input');
+  }
 
   if (input.every(n => !isNaN(n))) {
     return {
