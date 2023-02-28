@@ -8,7 +8,7 @@ interface Result {
   average: number;
 }
 
-interface ExerciseValues {
+export interface ExerciseValues {
   targetDailyHours: number;
   dailyExerciseHours: number[];
 }
@@ -51,7 +51,7 @@ const parseExerciseArguments = (args: string[]): ExerciseValues => {
   }
 };
 
-function calculateExercises(
+export function calculateExercises(
   dailyExerciseHours: number[],
   targetDailyHours: number
 ): Result {
