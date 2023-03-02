@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { CoursePart } from '../types';
-
 const Total = ({ courseParts }: { courseParts: CoursePart[] }) => {
   return (
     <p>
