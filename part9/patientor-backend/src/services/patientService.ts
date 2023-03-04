@@ -1,12 +1,13 @@
-import patients from '../data/patients';
+import patients from '../data/patients-full';
 import { NonSensitivePatientData, Patient, NewPatient } from '../types/types';
 import { v1 as uuid } from 'uuid';
 
 const getAllPatients = (): NonSensitivePatientData[] => {
   return patients.map(
-    ({ id, name, dateOfBirth, gender, occupation, entries }) => ({
+    ({ id, ssn, name, dateOfBirth, gender, occupation, entries }) => ({
       id,
       name,
+      ssn,
       dateOfBirth,
       gender,
       occupation,
