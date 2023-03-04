@@ -7,6 +7,16 @@ const router = express.Router();
 router.get('/', (_req, res) => {
   res.send(patientService.getAllPatients());
 });
+
+router.get('/:id', (req, res) => {
+  const patient = patientService.getPatient(req.params.id);
+  if (patient) {
+    res.send(patient);
+  } else {
+    res.status(400).send({ error: 'No patient found' });
+  }
+});
+
 router.post('/', (req, res) => {
   try {
     const newPatient = toNewPatient(req.body);
