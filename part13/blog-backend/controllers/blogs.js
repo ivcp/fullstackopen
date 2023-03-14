@@ -38,7 +38,7 @@ router.put('/:id', blogFinder, async (req, res) => {
 
   if (req.blog) {
     await req.blog.update({ likes: req.body.likes });
-    return res.status(201).send(`updated likes to ${req.body.likes}`);
+    return res.status(200).send(`updated likes to ${req.body.likes}`);
   } else {
     return response.status(400).end();
   }
