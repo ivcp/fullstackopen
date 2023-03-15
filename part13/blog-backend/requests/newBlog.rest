@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/blogs/
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hbWVAbmFtZS5jb20iLCJpZCI6OSwiaWF0IjoxNjc4ODczODEyfQ.RV65yoKms0FwWfCS9SJ2FJQBZfEstp1-X1S3MhoZk5E
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hbWVAbmFtZS5jb20iLCJpZCI6OSwiaWF0IjoxNjc4ODg3MjczfQ.McFuwmPEL70kmAbTCQ6ggIpGmHtBhGPiY-gGr42qhwc
 
 {
-    "author": "John Doe",
-    "url": "www.google1.blog",
-    "title": "New Blog Title"
+    "author": "Robert C. Martin",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+    "title": "First class tests"
 }
