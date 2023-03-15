@@ -1,8 +1,9 @@
 POST http://localhost:3001/api/blogs/
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hbWVAbmFtZS5jb20iLCJpZCI6OSwiaWF0IjoxNjc4ODczODEyfQ.RV65yoKms0FwWfCS9SJ2FJQBZfEstp1-X1S3MhoZk5E
 
 {
     "author": "John Doe",
     "url": "www.google1.blog",
-    "title": "Test title 2"
+    "title": "New Blog Title"
 }

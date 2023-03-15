@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Blog } = require('../models');
+const { Blog, User } = require('../models');
+const tokenExtractor = require('../middleware/tokenExtractor');
 
 const blogFinder = async (req, _res, next) => {
   req.blog = await Blog.findByPk(req.params.id);
@@ -7,7 +8,12 @@ const blogFinder = async (req, _res, next) => {
 };
 
 router.get('/', async (_req, res) => {
-  const blogs = await Blog.findAll();
+  const blogs = await Blog.findAll({
+    include: {
+      model: User,
+      attributes: ['name'],
+    },
+  });
   return res.json(blogs);
 });
 
@@ -19,15 +25,20 @@ router.get('/:id', blogFinder, async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
-  const newBlog = await Blog.create(req.body);
+router.post('/', tokenExtractor, async (req, res) => {
+  const user = await User.findByPk(req.decodedToken.id);
+  const newBlog = await Blog.create({ ...req.body, userId: user.id });
   return res.json(newBlog);
 });
 
-router.delete('/:id', blogFinder, async (req, res) => {
-  if (req.blog) {
-    await req.blog.destroy();
+router.delete('/:id', tokenExtractor, blogFinder, async (req, res) => {
+  const user = await User.findByPk(req.decodedToken.id);
+  if (req.blog && user) {
+    req.blog.userId === user.id
+      ? await req.blog.destroy()
+      : res.status(401).send({ error: 'Unauthorized' });
   }
+
   res.status(204).end();
 });
 
