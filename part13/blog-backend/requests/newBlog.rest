@@ -1,9 +1,11 @@
 POST http://localhost:3001/api/blogs/
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hbWVAbmFtZS5jb20iLCJpZCI6OSwiaWF0IjoxNjc4ODg3MjczfQ.McFuwmPEL70kmAbTCQ6ggIpGmHtBhGPiY-gGr42qhwc
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hbWVAbmFtZS5jb20iLCJpZCI6MSwiaWF0IjoxNjc4OTYyOTI0fQ.5nWBmZGf6BSmzm-FIXmIi9z2Zbzi5AwjsWONmNh8LCI
 
 {
-    "author": "Robert C. Martin",
-    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    "title": "First class tests"
+    "author": "Fake author",
+    "url": "www.fake.com",
+    "title": "Test title",
+    "year": 1957
+    
 }
